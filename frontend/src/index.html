@@ -1,6 +1,61 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agenda de actividades</title><link rel="stylesheet" href="styles.css"><script defer src="app.js"></script></head>
-<body><main><header><div><p class="eyebrow">MI ESPACIO DE ORGANIZACIÓN</p><h1>Agenda de actividades</h1><p>Organiza tus pendientes y avanza a tu ritmo.</p></div><button id="tema" type="button">Cambiar tema</button></header>
-<p id="mensaje" role="status" aria-live="polite"></p>
-<section class="panel"><h2 id="form-titulo">Nueva actividad</h2><form id="form"><input type="hidden" id="id"><div class="grid"><label>Título<input id="titulo" required minlength="3" maxlength="150"></label><label>Fecha límite<input id="fecha_limite" type="date" min="1000-01-01" max="9999-12-31"></label></div><label>Descripción<textarea id="descripcion" maxlength="2000" rows="3"></textarea></label><div class="grid"><label>Estado<select id="estado"><option value="pendiente">Pendiente</option><option value="en_proceso">En proceso</option><option value="completada">Completada</option></select></label><label>Prioridad<select id="prioridad"><option value="baja">Baja</option><option value="media" selected>Media</option><option value="alta">Alta</option></select></label></div><div class="actions"><button id="guardar" type="submit">Crear actividad</button><button id="cancelar" type="button" class="secondary" hidden>Cancelar edición</button></div></form></section>
-<section class="panel"><div class="toolbar"><h2>Mis actividades</h2><a class="button secondary" href="/api/actividades/exportar" download>Exportar JSON</a></div><form id="busqueda" class="toolbar"><label class="grow">Buscar por título o descripción<input id="buscar" maxlength="150" type="search" placeholder="Escribe una palabra…"></label><button type="submit">Buscar</button><button type="button" id="refrescar" class="secondary">Actualizar</button></form><p id="resumen"></p><div id="lista"></div><nav class="toolbar" aria-label="Paginación"><button id="anterior" class="secondary" type="button">Anterior</button><span id="pagina"></span><button id="siguiente" class="secondary" type="button">Siguiente</button></nav></section><footer>Agenda personal · Práctica de Infraestructura de Servicios</footer></main></body></html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Agenda de actividades</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <div>
+                <p class="eyebrow">MI ESPACIO DE ORGANIZACIÓN</p>
+                <h1>Agenda de actividades</h1>
+                <p>Organiza tus pendientes y avanza a tu ritmo.</p>
+            </div><button id="tema" type="button">Cambiar tema</button>
+        </header>
+        <p id="mensaje" role="status" aria-live="polite"></p>
+        <section class="panel">
+            <h2 id="form-titulo">Nueva actividad</h2>
+            <form id="form"><input type="hidden" id="id">
+                <div class="grid"><label>Título<input id="titulo" required minlength="3"
+                            maxlength="150"></label><label>Fecha límite<input id="fecha_limite" type="date"
+                            min="1000-01-01" max="9999-12-31"></label></div><label>Descripción<textarea id="descripcion"
+                        maxlength="2000" rows="3"></textarea></label>
+                <div class="grid"><label>Estado<select id="estado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en_proceso">En proceso</option>
+                            <option value="completada">Completada</option>
+                        </select></label><label>Prioridad<select id="prioridad">
+                            <option value="baja">Baja</option>
+                            <option value="media" selected>Media</option>
+                            <option value="alta">Alta</option>
+                        </select></label></div>
+                <div class="actions"><button id="guardar" type="submit">Crear actividad</button><button id="cancelar"
+                        type="button" class="secondary" hidden>Cancelar edición</button></div>
+            </form>
+        </section>
+        <section class="panel">
+            <div class="toolbar">
+                <h2>Mis actividades</h2><a class="button secondary" href="/api/actividades/exportar" download>Exportar
+                    JSON</a>
+            </div>
+            <form id="busqueda" class="toolbar"><label class="grow">Buscar por título o descripción<input id="buscar"
+                        maxlength="150" type="search" placeholder="Escribe una palabra…"></label><button
+                    type="submit">Buscar</button><button type="button" id="refrescar"
+                    class="secondary">Actualizar</button></form>
+            <p id="resumen"></p>
+            <div id="lista"></div>
+            <nav class="toolbar" aria-label="Paginación"><button id="anterior" class="secondary"
+                    type="button">Anterior</button><span id="pagina"></span><button id="siguiente" class="secondary"
+                    type="button">Siguiente</button></nav>
+        </section>
+        <footer>Agenda personal · Práctica de Infraestructura de Servicios</footer>
+    </main>
+</body>
+
+</html>
