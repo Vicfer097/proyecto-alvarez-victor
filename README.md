@@ -10,12 +10,13 @@ El numero de control termina en 1: corresponde una agenda cuya entidad es Activi
 - .env.example documenta la configuracion sin contrasenas reales.
 - .env local creado con contrasenas aleatorias independientes para root y la aplicacion.
 - Modelo SQL con llave primaria, restricciones y tres registros iniciales.
-- Etapa 2 configurada en compose.yaml; pruebas pendientes de ejecucion manual.
+- Etapa 2 completada manualmente por el estudiante.
+- Backend, frontend y Mailpit implementados; integracion pendiente de pruebas manuales.
 
-Los Dockerfiles y nginx.conf estan reservados para las siguientes etapas.
-compose.yaml permite levantar db y redis. La aplicacion completa aun no esta implementada.
-El estudiante ejecutara manualmente todos los comandos Docker.
-La guia de arranque y persistencia se encuentra en database/ETAPA_2.md.
+compose.yaml incluye los cinco servicios. La API y la interfaz estan implementadas.
+El estudiante ejecuta manualmente todos los comandos Docker. No se han ejecutado
+comandos Docker durante el desarrollo del backend y frontend.
+Consultar GUIA_INTEGRACION.md para construir, levantar y comprobar el proyecto.
 
 ## Estructura
 
@@ -73,7 +74,7 @@ y /health con comprobacion de MariaDB y Redis. La API utilizara GET, POST, PUT y
 El PDF exige elegir una mejora individual. Se mantiene el alcance previamente
 solicitado: busqueda, paginacion, prioridad, fecha limite, validacion avanzada, tema
 visual, exportacion JSON y segundo correo al completar una actividad.
-Estas funciones estan previstas; aun no estan implementadas.
+Estas funciones estan implementadas y pendientes de verificacion en Docker.
 
 ## Requisitos y configuracion local
 
@@ -96,29 +97,28 @@ MariaDB se utilizaran 3306 y /var/lib/mysql. Tambien menciona MariaDB:16-alpine;
 se utiliza la imagen oficial mariadb:11.4 para la etapa 2.
 Estas correcciones conservan la arquitectura y los requisitos de la practica.
 
-## Siguientes etapas y verificacion
+## Ejecucion y pruebas manuales
 
-La configuracion de db y redis esta lista. El estudiante debe validar Compose, levantar
-ambos y demostrar salud, inicializacion y persistencia siguiendo database/ETAPA_2.md.
-Despues implementar backend, Mailpit, frontend y la integracion completa.
-
-Cuando exista una configuracion ejecutable, los comandos previstos son:
-
-```sh
-docker compose config
-docker compose up -d db redis
-docker compose ps
-docker compose logs db redis
-docker compose exec redis redis-cli ping
-```
-
-Para la integracion final:
-
-```sh
+```powershell
+Set-Location C:\proyecto-alvarez-victor
+docker compose config --quiet
 docker compose up -d --build
-curl http://localhost:8081/api/health
+docker compose ps
+curl.exe http://localhost:8081/api/health
 ```
 
-Las pruebas del punto 7 cubriran CRUD, persistencia, cache, invalidacion, contador,
-correo, aislamiento y recuperacion del backend. Se recopilaran capturas para el PDF
-final y se completaran las instrucciones reproducibles del repositorio.
+Agenda: http://localhost:8081. Mailpit: http://localhost:8025.
+Los puertos publicos estan vinculados a 127.0.0.1; db, redis y backend no publican puertos.
+
+GUIA_INTEGRACION.md describe los endpoints y las pruebas de CRUD, cache, contador,
+correos, mejoras individuales, aislamiento y recuperacion. database/ETAPA_2.md conserva
+las pruebas de inicializacion y persistencia. No eliminar volumenes para reconstruir.
+
+La cache usa versiones: cada escritura incrementa actividades:version, y las claves
+anteriores dejan de utilizarse y expiran con su TTL. Los correos se envian por SMTP
+a Mailpit al crear y al cambiar el estado a completada. Los titulos se muestran como
+texto, sin interpretar HTML. El tema se conserva en localStorage.
+
+Las evidencias y el PDF final de entrega se elaboraran con los resultados de las
+pruebas manuales del estudiante. La construccion y funcionamiento integrado aun
+requieren verificacion en Docker.
