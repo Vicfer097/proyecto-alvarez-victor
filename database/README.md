@@ -76,7 +76,7 @@ ORDER BY fecha_limite, id;
 
 ## Integracion posterior con Docker
 
-Montar `db/init.sql` en `/docker-entrypoint-initdb.d/01-init.sql` y un volumen
+Montar `database/init.sql` en `/docker-entrypoint-initdb.d/01-init.sql` y un volumen
 nombrado en `/var/lib/mysql`. El backend usara `DB_HOST=db`, `DB_PORT=3306`
 y `DB_NAME=agenda_actividades`.
 

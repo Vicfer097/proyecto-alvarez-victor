@@ -1,0 +1,12 @@
+# Secretos locales; conservar la plantilla.
+.env
+.env.*
+!.env.example
+
+# Dependencias, registros y archivos temporales.
+node_modules/
+vendor/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
