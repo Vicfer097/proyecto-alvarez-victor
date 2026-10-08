@@ -1,0 +1,11 @@
+FROM composer:2 AS dependencies
+WORKDIR /app
+COPY composer.json ./
+RUN composer install --no-dev --no-interaction --prefer-dist --no-progress
+
+FROM php:8.3-apache
+RUN apt-get update && apt-get install -y --no-install-recommends libonig-dev     && docker-php-ext-install pdo_mysql mbstring     && pecl install redis-6.1.0 && docker-php-ext-enable redis     && a2enmod rewrite && rm -rf /var/lib/apt/lists/*
+COPY apache.conf /etc/apache2/conf-available/agenda.conf
+RUN a2enconf agenda
+COPY --from=dependencies /app/vendor /opt/agenda/vendor
+COPY src/ /var/www/html/
