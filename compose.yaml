@@ -1,4 +1,4 @@
-# Etapa 2: servicios de datos. Los otros tres se agregaran despues.
+# Agenda de actividades: arquitectura de cinco servicios.
 services:
   db:
     image: mariadb:11.4
@@ -38,6 +38,51 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-agenda_actividades}
+      DB_USER: ${DB_USER:-agenda_app}
+      DB_PASSWORD: ${MARIADB_PASSWORD:?Define MARIADB_PASSWORD en .env}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      CACHE_TTL: ${CACHE_TTL:-30}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_FROM: ${SMTP_FROM:-agenda@example.test}
+      SMTP_TO: ${SMTP_TO:-estudiante@example.test}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    networks:
+      - app_network
+
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MAILPIT_UI_PORT:-8025}:8025"
+    networks:
+      - app_network
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8081}:80"
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - app_network
 
 networks:
   app_network:
