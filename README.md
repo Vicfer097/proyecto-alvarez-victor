@@ -10,10 +10,12 @@ El numero de control termina en 1: corresponde una agenda cuya entidad es Activi
 - .env.example documenta la configuracion sin contrasenas reales.
 - .env local creado con contrasenas aleatorias independientes para root y la aplicacion.
 - Modelo SQL con llave primaria, restricciones y tres registros iniciales.
-- Etapa 2 pendiente de revision y visto bueno del estudiante.
+- Etapa 2 configurada en compose.yaml; pruebas pendientes de ejecucion manual.
 
-Los Dockerfiles, nginx.conf y compose.yaml son archivos reservados para las siguientes
-etapas. Todavia no se puede levantar la aplicacion; no se ha ejecutado el SQL.
+Los Dockerfiles y nginx.conf estan reservados para las siguientes etapas.
+compose.yaml permite levantar db y redis. La aplicacion completa aun no esta implementada.
+El estudiante ejecutara manualmente todos los comandos Docker.
+La guia de arranque y persistencia se encuentra en database/ETAPA_2.md.
 
 ## Estructura
 
@@ -91,13 +93,13 @@ Mailpit solo captura mensajes de desarrollo; no entrega correo real.
 
 El PDF menciona DB_PORT=5432 y /var/lib/MariaDB/data. Para la imagen oficial de
 MariaDB se utilizaran 3306 y /var/lib/mysql. Tambien menciona MariaDB:16-alpine;
-la etiqueta real de MariaDB se verificara antes de configurar la etapa 2.
+se utiliza la imagen oficial mariadb:11.4 para la etapa 2.
 Estas correcciones conservan la arquitectura y los requisitos de la practica.
 
 ## Siguientes etapas y verificacion
 
-Tras el visto bueno, configurar db y redis, validar Compose, levantar ambos y demostrar
-salud, inicializacion y persistencia al recrear db sin eliminar su volumen.
+La configuracion de db y redis esta lista. El estudiante debe validar Compose, levantar
+ambos y demostrar salud, inicializacion y persistencia siguiendo database/ETAPA_2.md.
 Despues implementar backend, Mailpit, frontend y la integracion completa.
 
 Cuando exista una configuracion ejecutable, los comandos previstos son:

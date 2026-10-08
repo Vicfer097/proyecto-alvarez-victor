@@ -1,2 +1,48 @@
-# Pendiente de la etapa 2: MariaDB y Redis.
-# La configuracion final incluira frontend, backend, db, redis y mailpit.
+# Etapa 2: servicios de datos. Los otros tres se agregaran despues.
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${MARIADB_DATABASE:?Define MARIADB_DATABASE en .env}
+      MARIADB_USER: ${MARIADB_USER:?Define MARIADB_USER en .env}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Define MARIADB_PASSWORD en .env}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Define MARIADB_ROOT_PASSWORD en .env}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --sql-mode=STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  redis_data:
